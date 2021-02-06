@@ -19,7 +19,7 @@ class ChatsController < ApplicationController
     @chat = @application.chats.new(chat_params)
 
     if @chat.save
-      render json: @chat, status: :created, location: @chat
+      render json: @chat, status: :created, location: application_chat_url(id: @chat)
     else
       render json: @chat.errors, status: :unprocessable_entity
     end
@@ -40,6 +40,7 @@ class ChatsController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_chat
     @chat = @application.chats.find(params[:id])
