@@ -42,11 +42,11 @@ class ApplicationsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_application
-    @application = Application.find(params[:application_token])
+    @application = Application.find_by_token(params[:application_token])
   end
 
   # Only allow a trusted parameter "white list" through.
   def application_params
-    params.require(:application).permit(:name, :token)
+    params.require(:application).permit(:name)
   end
 end
