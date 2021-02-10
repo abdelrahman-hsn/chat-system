@@ -1,4 +1,4 @@
 class ChatSerializer < ActiveModel::Serializer
-  attributes :name
+  attributes :chat_number, :name, :messages_count
   has_one :application
 end

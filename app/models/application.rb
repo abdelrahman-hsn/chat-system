@@ -7,4 +7,8 @@ class Application < ApplicationRecord
   validates :token, uniqueness: true
 
   has_many :chats, dependent: :destroy
+
+  def calculate_chats_count
+    chats.count
+  end
 end

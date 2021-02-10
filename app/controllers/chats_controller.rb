@@ -43,7 +43,7 @@ class ChatsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_chat
-    @chat = @application.chats.find(params[:id])
+    @chat = @application.chats.find_by_chat_number(params[:number])
   end
 
   # Only allow a trusted parameter "white list" through.
