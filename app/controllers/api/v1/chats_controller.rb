@@ -1,4 +1,4 @@
-class ChatsController < ApplicationController
+class Api::V1::ChatsController < ApplicationController
   before_action :set_application
   before_action :set_chat, only: %i[show update destroy]
 

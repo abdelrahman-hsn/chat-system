@@ -1,4 +1,4 @@
-class ApplicationsController < ApplicationController
+class Api::V1::ApplicationsController < ApplicationController
   before_action :set_application, only: %i[show update destroy]
 
   # GET /applications
@@ -18,7 +18,7 @@ class ApplicationsController < ApplicationController
     @application = Application.new(application_params)
 
     if @application.save
-      render json: @application, status: :created, location: @application
+      render json: @application, status: :created, location: api_v1_application_url(@application)
     else
       render json: @application.errors, status: :unprocessable_entity
     end

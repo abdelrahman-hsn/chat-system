@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MessagesController < ApplicationController
+class Api::V1::MessagesController < ApplicationController
   before_action :set_application
   before_action :set_chat
   before_action :set_message, only: %i[show update destroy]

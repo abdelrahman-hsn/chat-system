@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
-  resources :applications, param: :token do
-    resources :chats, param: :number do
-      resources :messages, param: :number do
-        collection do
-          get :search
+  namespace :api do
+    namespace :v1 do
+      resources :applications, param: :token do
+        resources :chats, param: :number do
+          resources :messages, param: :number do
+            collection do
+              get :search
+            end
+          end
         end
       end
     end
