@@ -1,0 +1,89 @@
+version: "3.3"
+services:
+  db:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+  elasticsearch:
+    image: elasticsearch:7.10.1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  sidekiq:
+    depends_on:
+      - "db"
+      - "redis"
+    build: .
+    links:
+      - db
+      - redis
+    volumes:
+      - ".:/app"
+      - "./config/docker/database.yml:/app/config/database.yml"
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_DATABASE: chat-system
+      DB_PORT: 3306
+      DB_HOST: db
+      RAILS_ENV: development
+      RAILS_MAX_THREADS: 5
+      REDIS_URL: redis://redis:6379/0
+    command: bash -c "cd /app && bundle exec sidekiq"
+  website:
+    stdin_open: true
+    tty: true
+    command: bash -c "rm -f tmp/pids/server.pid && rake db:create && rake db:migrate:reset && rake db:seed'"
+    depends_on:
+      - "db"
+      - "redis"
+      - "elasticsearch"
+    links:
+      - db
+      - elasticsearch
+      - redis
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_DATABASE: chat-system
+      DB_PORT: 3306
+      DB_HOST: db
+      RAILS_ENV: development
+      RAILS_MAX_THREADS: 5
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ".:/app"
+      - "./config/docker/database.yml:/app/config/database.yml"
+volumes:
+  db:
+  redis:
+  elasticsearch:
+  esdata1:
+    driver: local
+
+networks:
+  esnet:

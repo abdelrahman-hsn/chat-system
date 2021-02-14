@@ -45,9 +45,9 @@ group :development do
 end
 
 
-gem 'active_model_serializers', '~> 0.10.0'
 gem 'counter-cache'
-gem 'elasticsearch-model'
-gem 'elasticsearch-rails'
+gem 'elasticsearch-model', github: 'elastic/elasticsearch-rails', branch: '5.x'
+gem 'elasticsearch-rails', github: 'elastic/elasticsearch-rails', branch: '5.x'
+gem 'fast_jsonapi'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

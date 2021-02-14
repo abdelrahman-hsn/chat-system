@@ -5,6 +5,7 @@ require 'elasticsearch/model'
 class Message < ApplicationRecord
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
+
   include Counter::Cache
   counter_cache_on column: :messages_count, # chat.messages_count
                    relation: :chat,

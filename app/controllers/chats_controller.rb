@@ -19,7 +19,7 @@ class ChatsController < ApplicationController
     @chat = @application.chats.new(chat_params)
 
     if @chat.save
-      render json: @chat, status: :created, location: application_chat_url(id: @chat)
+      render json: @chat, status: :created, location: application_chat_url(number: @chat.chat_number)
     else
       render json: @chat.errors, status: :unprocessable_entity
     end
